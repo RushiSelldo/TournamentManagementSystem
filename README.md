@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # TournamentManagementSystem
 
 ## ER Diagram
@@ -31,4 +30,3 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
->>>>>>> 54ae64d (Added Jwt authentication)
