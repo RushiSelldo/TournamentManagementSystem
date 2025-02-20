@@ -1,35 +1,24 @@
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
   before_action :authenticate_user!
 
   private
 
   def authenticate_user!
-    token = request.headers["Authorization"]&.split(" ")&.last
-    return render_unauthorized unless token
-
-    secret_key = Rails.application.secret_key_base # Make sure this matches the one used for encoding
-
-    begin
-      decoded_token = JWT.decode(token, secret_key, true, algorithm: "HS256")
-
-      # Ensure decoded_token is valid and contains user_id
-      if decoded_token.present? && decoded_token[0].is_a?(Hash) && decoded_token[0]["user_id"]
-        user_id = decoded_token[0]["user_id"]
-        @current_user = User.find_by(id: user_id)
-      end
-
-      render_unauthorized unless @current_user
-    rescue JWT::DecodeError, ActiveRecord::RecordNotFound => e
-      Rails.logger.error("JWT Error: #{e.message}") # Logs the actual error for debugging
-      render_unauthorized
-    end
-  end
-
-  def render_unauthorized
-    render json: { error: "Unauthorized" }, status: :unauthorized
+    @current_user = current_user
+    redirect_to login_path, alert: "Please log in first" unless @current_user
   end
 
   def current_user
-    @current_user
+    token = cookies.signed[:auth_token]  # ✅ Read token from HTTP-only cookie
+    return unless token
+
+    begin
+      decoded_token = JWT.decode(token, Rails.application.secret_key_base, true, algorithm: "HS256")
+      user_id = decoded_token[0]["user_id"]
+      @current_user ||= User.find_by(id: user_id)
+    rescue JWT::DecodeError, ActiveRecord::RecordNotFound
+      nil
+    end
   end
 end

@@ -1,0 +1,30 @@
+<div class="container d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card shadow-lg p-4 border-0 rounded-4" style="width: 400px; background: white;">
+    <div class="text-center">
+      <i class="bi bi-person-circle text-primary" style="font-size: 3rem;"></i>
+      <h2 class="mb-3 fw-bold">Welcome Back</h2>
+      <p class="text-muted">Login to continue</p>
+    </div>
+
+    <%= form_with url: login_path, method: :post, local: true, class: "needs-validation", novalidate: true do |form| %>
+      <div class="mb-3">
+        <%= form.label :email, class: "form-label fw-semibold" %>
+        <%= form.email_field :email, class: "form-control rounded-3", required: true, placeholder: "Enter your email" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :password, class: "form-label fw-semibold" %>
+        <%= form.password_field :password, class: "form-control rounded-3", required: true, placeholder: "Enter your password" %>
+      </div>
+
+      <div class="d-grid">
+        <%= form.submit "Login", class: "btn btn-primary rounded-3 fw-semibold py-2" %>
+      </div>
+    <% end %>
+
+    <div class="text-center mt-3">
+      <p class="mb-0 text-muted">Don't have an account?</p>
+      <%= link_to "Sign up", signup_path, class: "text-primary fw-semibold text-decoration-none" %>
+    </div>
+  </div>
+</div>

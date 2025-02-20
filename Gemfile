@@ -24,6 +24,8 @@ gem "pundit"
 gem "bcrypt"
 gem "jwt"
 gem "pry"
+# gem "bootstrap", "~> 5.3"
+# gem "sassc-rails" # Enables SCSS support
 
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]

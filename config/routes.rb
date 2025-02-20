@@ -3,16 +3,17 @@ Rails.application.routes.draw do
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  root "auth#login" # Default route to login
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  get "/signup", to: "auth#signup"
+  post "/signup", to: "auth#create_user"
 
-  # Defines the root path route ("/")
-  # root "posts#index"\
-  post "/signup", to: "auth#signup"
-  post "/login", to: "auth#login"
+  get "/login", to: "auth#login"
+  post "/login", to: "auth#authenticate"
+
+  delete "/logout", to: "auth#logout"
+
+  get "/profile", to: "auth#profile"
 
    # User-related routes (requires authentication)
    resources :users, only: [ :show, :update ]
