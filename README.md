@@ -4,7 +4,7 @@
 
 Here is the ER diagram for the project:
 
-![ER Diagram](assets/images/erd.png)
+![ER Diagram](app/assets/images/erd.png)
 =======
 # README
 
