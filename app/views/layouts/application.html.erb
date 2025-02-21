@@ -1,35 +1,121 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= content_for(:title) || "Db Check" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>Tournament Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta charset="UTF-8">
 
-    <%= yield :head %>
+  <!-- Bootstrap & Icons -->
+  <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css", media: "all" %>
+  <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js", defer: true %>
+  <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
+  <%= yield :head %> <%# Allows additional head content per view %>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+    }
+    .sidebar {
+      height: 100vh;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #343a40;
+      padding-top: 20px;
+    }
+    .sidebar a {
+      padding: 12px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #ddd;
+      display: block;
+    }
+    .sidebar a:hover {
+      background-color: #495057;
+      color: #fff;
+    }
+    .content {
+      margin-left: 260px;
+      padding: 20px;
+    }
+    .card {
+      border-radius: 10px;
+    }
+    .navbar {
+      background-color: #343a40;
+    }
+    .navbar .nav-link {
+      color: white !important;
+    }
+  </style>
+</head>
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%# <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%# <%= javascript_importmap_tags %> 
+<body>
 
-    <%= stylesheet_link_tag "application", data_turbo_track: "reload" %>
-<%= javascript_include_tag "application", defer: true %>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h4 class="text-center text-light">🏆 Tournaments</h4>
+    <%= link_to "🏠 Dashboard", root_path %>
+    <%= link_to "📅 Upcoming Tournaments", host_tournaments_path %>
+    <% if current_user %>
+      <%= link_to "🚪 Logout", logout_path, method: :delete, class: "text-danger" %>
+    <% else %>
+      <%= link_to "🚪 Login", login_path %>
+      <%= link_to "📝 Signup", signup_path %>
+    <% end %>
+  </div>
 
-  </head>
+  <!-- Main Content -->
+  <div class="content">
 
-  <body>
-    <%= yield %>
-  </body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Dashboard</a>
+        <div class="ms-auto">
+          <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle"></i> <%= current_user ? current_user.name : "Guest User" %>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <% if current_user %>
+                <li><%= link_to "Logout", logout_path, method: :delete, class: "dropdown-item" %></li>
+              <% else %>
+                <li><%= link_to "Login", login_path, class: "dropdown-item" %></li>
+                <li><%= link_to "Signup", signup_path, class: "dropdown-item" %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <% if flash.any? %>
+      <div class="container mt-3">
+        <% flash.each do |type, message| %>
+          <div class="alert <%= bootstrap_class_for_flash(type) %> alert-dismissible fade show" role="alert">
+            <%= message %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- Dynamic Page Content -->
+    <div class="container mt-4">
+      <%= yield %> <%# This is where individual views will be inserted %>
+    </div>
+
+  </div>
+
+</body>
 </html>

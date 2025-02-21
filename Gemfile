@@ -24,6 +24,7 @@ gem "pundit"
 gem "bcrypt"
 gem "jwt"
 gem "pry"
+
 # gem "bootstrap", "~> 5.3"
 # gem "sassc-rails" # Enables SCSS support
 

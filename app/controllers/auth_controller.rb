@@ -3,6 +3,10 @@ class AuthController < ApplicationController
 
   SECRET_KEY = Rails.application.secret_key_base
 
+  rescue_from StandardError, with: :handle_internal_server_error
+  rescue_from ActiveRecord::RecordInvalid, with: :handle_unprocessable_entity
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
+
   def signup
     @user = User.new
   end
@@ -11,10 +15,18 @@ class AuthController < ApplicationController
     user = User.new(user_params)
 
     if user.save
-      redirect_to login_path, notice: "Account created successfully! Please log in."
+      respond_to do |format|
+        format.html { redirect_to login_path, notice: "Account created successfully! Please log in." }
+        format.json { render json: { message: "Account created successfully" }, status: :created }
+      end
     else
-      flash.now[:alert] = user.errors.full_messages.join(", ")
-      render :signup, status: :unprocessable_entity
+      respond_to do |format|
+        format.html do
+          flash.now[:alert] = user.errors.full_messages.join(", ")
+          render :signup, status: :unprocessable_entity
+        end
+        format.json { render json: { errors: user.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -27,29 +39,49 @@ class AuthController < ApplicationController
     if user&.authenticate(params[:password])
       token = generate_token(user.id)
 
-      # Store token in an HTTP-only cookie
+
       cookies.signed[:auth_token] = {
         value: token,
         httponly: true,
         expires: 1.hour.from_now
       }
 
-      redirect_to profile_path, notice: "Logged in successfully!"
+      respond_to do |format|
+        format.html { redirect_to profile_path, notice: "Logged in successfully!" }
+        format.json { render json: { message: "Logged in successfully", token: token }, status: :ok }
+      end
     else
-      flash.now[:alert] = "Invalid email or password"
-      render :login, status: :unprocessable_entity
+      respond_to do |format|
+        format.html do
+          flash.now[:alert] = "Invalid email or password"
+          render :login, status: :unprocessable_entity
+        end
+        format.json { render json: { error: "Invalid email or password" }, status: :unauthorized }
+      end
     end
   end
 
   def logout
-    cookies.delete(:auth_token)  # ✅ Delete token cookie on logout
-    redirect_to login_path, notice: "Logged out successfully!"
+    cookies.delete(:auth_token)
+
+    respond_to do |format|
+      format.html { redirect_to login_path, notice: "Logged out successfully!" }
+      format.json { render json: { message: "Logged out successfully" }, status: :ok }
+    end
   end
 
   def profile
     @user = current_user
-    unless @user
-      redirect_to login_path, alert: "Please log in first"
+    if @user
+      respond_to do |format|
+        format.html
+        format.json { render json: @user, status: :ok }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to login_path, alert: "Please log in first" }
+        format.json { render json: { error: "Unauthorized. Please log in." }, status: :unauthorized }
+      end
     end
   end
 
@@ -60,6 +92,21 @@ class AuthController < ApplicationController
   end
 
   def generate_token(user_id)
-    JWT.encode({ user_id: user_id }, SECRET_KEY, "HS256")
+    JWT.encode({ user_id: user_id, exp: 1.hour.from_now.to_i }, SECRET_KEY, "HS256")
+  end
+
+  # Error Handling Methods
+
+  def handle_internal_server_error(error)
+    Rails.logger.error("Internal Server Error: #{error.message}")
+    render json: { error: "Something went wrong. Please try again later." }, status: :internal_server_error
+  end
+
+  def handle_unprocessable_entity(error)
+    render json: { error: error.record.errors.full_messages }, status: :unprocessable_entity
+  end
+
+  def handle_not_found(error)
+    render json: { error: "Resource not found" }, status: :not_found
   end
 end

@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
-  root "auth#login" # Default route to login
+  root to: redirect("/dashboard.html")
+
 
   get "/signup", to: "auth#signup"
   post "/signup", to: "auth#create_user"
@@ -11,13 +12,18 @@ Rails.application.routes.draw do
   get "/login", to: "auth#login"
   post "/login", to: "auth#authenticate"
 
+
+
+get "/logout", to: "auth#logout"
   delete "/logout", to: "auth#logout"
 
   get "/profile", to: "auth#profile"
 
-   # User-related routes (requires authentication)
+
    resources :users, only: [ :show, :update ]
 
-  # # Example protected route
-  get "/profile", to: "auth#profile"  # Needs authentication
+   namespace :host do
+    resources :tournaments
+  end
+  get "/profile", to: "auth#profile"
 end

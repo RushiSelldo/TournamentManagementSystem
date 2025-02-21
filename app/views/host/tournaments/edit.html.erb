@@ -1,0 +1,32 @@
+<div class="container mt-5">
+  <div class="card shadow-lg p-4 border-0 rounded-4" style="max-width: 500px; margin: auto; background: white;">
+    <h2 class="text-center fw-bold mb-3">Edit Tournament</h2>
+    
+    <%= form_with model: @tournament, url: host_tournament_path(@tournament), method: :patch, class: "needs-validation", novalidate: true do |f| %>
+      
+      <div class="mb-3">
+        <%= f.label :name, "Tournament Name", class: "form-label fw-semibold" %>
+        <%= f.text_field :name, class: "form-control rounded-3", required: true, placeholder: "Enter tournament name" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :location, "Location", class: "form-label fw-semibold" %>
+        <%= f.text_field :location, class: "form-control rounded-3", required: true, placeholder: "Enter location" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :start_date, "Start Date", class: "form-label fw-semibold" %>
+        <%= f.date_select :start_date, class: "form-control rounded-3", required: true %>
+      </div>
+
+      <div class="d-grid">
+        <%= f.submit "Update Tournament", class: "btn btn-primary rounded-3 fw-semibold py-2" %>
+      </div>
+      
+    <% end %>
+
+    <div class="text-center mt-3">
+      <%= link_to "⬅️ Back to Tournament", host_tournament_path(@tournament), class: "text-primary fw-semibold text-decoration-none" %>
+    </div>
+  </div>
+</div>

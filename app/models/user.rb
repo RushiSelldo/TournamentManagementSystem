@@ -4,10 +4,10 @@ class User < ApplicationRecord
   has_many :team_members
   has_many :teams, through: :team_members
 
-VALID_EMAIL_REGEX = /\A[^@\s]+@[^@\s]+\z/
+  # VALID_EMAIL_REGEX = /\A[^@\s]+@[^@\s]+\z/
 
   validates :name, presence: true, length: { minimum: 2, maximum: 50 }
-  validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
+  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :role, presence: true, inclusion: { in: %w[host participant admin] }
 
   before_save :downcase_email

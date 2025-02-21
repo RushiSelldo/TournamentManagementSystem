@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, only: [ :show, :update ]
 
-  # GET /users/:id - Show user profile
   def show
     user = User.find_by(id: params[:id])
 
@@ -12,7 +11,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH /users/:id - Update user profile
+
   def update
     user = User.find_by(id: params[:id])
 

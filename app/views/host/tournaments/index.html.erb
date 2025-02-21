@@ -1,0 +1,55 @@
+<% content_for :head do %>
+  <title>Upcoming Tournaments</title>
+<% end %>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card shadow p-3">
+      <h5 class="fw-bold">🏆 Total Tournaments</h5>
+      <h2 class="text-primary">15</h2>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow p-3">
+      <h5 class="fw-bold">👥 Total Participants</h5>
+      <h2 class="text-success">150</h2>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow p-3">
+      <h5 class="fw-bold">🎯 Matches Played</h5>
+      <h2 class="text-danger">40</h2>
+    </div>
+  </div>
+</div>
+
+<!-- Upcoming Tournaments Table -->
+<div class="mt-4">
+  <h4 class="fw-bold">📅 Upcoming Tournaments</h4>
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Location</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tournaments.each do |tournament| %>
+        <tr>
+          <td><%= tournament.name %></td>
+          <td><%= tournament.start_date.strftime("%d %b %Y") %></td>
+          <td><%= tournament.location %></td>
+          <td>
+            <%= link_to "View", host_tournament_path(tournament), class: "btn btn-sm btn-info" %>
+         <%= link_to "Edit", edit_host_tournament_path(tournament), class: "btn btn-sm btn-warning" %>
+            <%= link_to "Delete", host_tournament_path(tournament), method: :delete, class: "btn btn-sm btn-danger", data: { confirm: "Are you sure?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
