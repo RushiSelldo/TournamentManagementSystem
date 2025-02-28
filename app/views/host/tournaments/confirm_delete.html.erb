@@ -1,0 +1,17 @@
+<% content_for :head do %>
+  <title>Delete Tournament</title>
+<% end %>
+
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h2 class="text-danger fw-bold">⚠ Confirm Deletion</h2>
+    <p>Are you sure you want to delete the tournament "<strong><%= @tournament.name %></strong>"?</p>
+    
+    <div class="d-flex gap-2">
+      <%= link_to "Cancel", host_tournament_path(@tournament), class: "btn btn-secondary" %>
+      
+      <%= button_to "Delete", host_tournament_path(@tournament), method: :delete, class: "btn btn-danger",
+          data: { turbo_confirm: "This action cannot be undone. Proceed?" } %>
+    </div>
+  </div>
+</div>

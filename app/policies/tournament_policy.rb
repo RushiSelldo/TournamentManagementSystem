@@ -1,23 +1,25 @@
 class TournamentPolicy < ApplicationPolicy
-  def new?
-    user&.host? # Only hosts can access the new tournament form
+  def index?
+    true # Everyone can view tournaments
+  end
+
+  def show?
+    true # Everyone can view a specific tournament
   end
 
   def create?
-    user&.host? # Only hosts can create tournaments
+    user.present? && user.role == "host" # Only hosts can create tournaments
   end
 
   def update?
-    user&.admin? || record.host == user # Admins or the host can update
+    user.present? && user.role == "host" && record.host == user # Only the host can update
   end
 
   def destroy?
-    user&.admin? || record.host == user # Admins or the host can delete
+    user.present? && user.role == "host" && record.host == user # Only the host can delete
   end
 
-  class Scope < Scope
-    def resolve
-      scope.all # Return all tournaments (modify if needed)
-    end
+  def count?
+    true # Anyone can fetch tournament count
   end
 end

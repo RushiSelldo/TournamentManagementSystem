@@ -1,22 +1,24 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user  # Make it available in views
+  helper_method :current_user
 
-  # include Pundit::Authorization
+  include Pundit::Authorization
 
   protect_from_forgery with: :exception
   before_action :authenticate_user!
   skip_before_action :verify_authenticity_token
 
-  # rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
 
+
   def user_not_authorized
-    respond_to do |format|
-      format.html { redirect_to root_path, alert: "You are not authorized to perform this action." }
-      format.json { render json: { error: "Forbidden" }, status: :forbidden }
-    end
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_to(request.referrer || root_path)
   end
+
+
+
 
   def authenticate_user!
     @current_user = current_user
@@ -29,8 +31,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    # binding.pry
-    token = cookies.signed[:auth_token]  # ✅ Consistent Cookie Name
+    token = cookies.signed[:auth_token]
     return unless token
 
     begin

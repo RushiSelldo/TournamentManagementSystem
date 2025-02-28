@@ -4,5 +4,5 @@
 <p><strong>Start Date:</strong> <%= @tournament.start_date %></p>
 
 <%= link_to "✏️ Edit Tournament", edit_host_tournament_path(@tournament) %> |
-<%= link_to "❌ Delete Tournament", host_tournament_path(@tournament), method: :delete, data: { confirm: "Are you sure?" } %> |
+<%= button_to "❌ Delete Tournament", host_tournament_path(@tournament), method: :delete, data: { confirm: "Are you sure?" } %> |
 <%= link_to "Back to Tournaments", host_tournaments_path %>

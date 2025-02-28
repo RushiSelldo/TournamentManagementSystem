@@ -11,10 +11,15 @@ class User < ApplicationRecord
   validates :role, presence: true, inclusion: { in: %w[host participant admin] }
 
   before_save :downcase_email
+  after_initialize :set_default_role, if: :new_record?
 
   private
 
   def downcase_email
     self.email = email.downcase
+  end
+
+  def set_default_role
+    self.role ||= "participant"
   end
 end

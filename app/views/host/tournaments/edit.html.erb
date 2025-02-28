@@ -14,9 +14,9 @@
         <%= f.text_field :location, class: "form-control rounded-3", required: true, placeholder: "Enter location" %>
       </div>
 
-      <div class="mb-3">
-        <%= f.label :start_date, "Start Date", class: "form-label fw-semibold" %>
-        <%= f.date_select :start_date, class: "form-control rounded-3", required: true %>
+    <div class="mb-3">
+        <%= f.label :start_date, "Start Date", class: "form-label fw-bold" %>
+        <%= f.date_field :start_date, class: "form-control", required: true %>
       </div>
 
       <div class="d-grid">

@@ -59,19 +59,32 @@
 </head>
 
 <body>
+<!-- Sidebar -->
+<div class="sidebar">
+  <h4 class="text-center text-light">🏆 Tournaments</h4>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <h4 class="text-center text-light">🏆 Tournaments</h4>
-    <%= link_to "🏠 Dashboard", root_path %>
-    <%= link_to "📅 Upcoming Tournaments", host_tournaments_path %>
-    <% if current_user %>
-      <%= link_to "🚪 Logout", logout_path, method: :delete, class: "text-danger" %>
-    <% else %>
-      <%= link_to "🚪 Login", login_path %>
-      <%= link_to "📝 Signup", signup_path %>
-    <% end %>
-  </div>
+  <%= link_to "🏠 Dashboard", root_path %>
+  <%= link_to "📅 Upcoming Tournaments", host_tournaments_path %>
+
+  <% if current_user %>
+    <%= link_to "📊 My Tournaments", host_tournaments_path(user_id: current_user.id) %>
+    <%= link_to "👥 Joined Tournaments", host_tournaments_path(joined: true) %>
+    <%= link_to "⚙️ Manage Profile", profile_path %>
+    <%= link_to "📩 Notifications", "#" %> <!-- Placeholder for future notifications -->
+    <%= link_to "🏆 Leaderboard", "#" %> <!-- Placeholder for future leaderboard -->
+    <% if current_user.role == "participant" %>
+<%= link_to "🎮 My Dashboard", participant_dashboard_path, class: "nav-link" %>
+<% end %>
+
+
+    <hr class="text-light">
+    <%= link_to "🚪 Logout", logout_path, method: :delete, class: "text-danger" %>
+  <% else %>
+    <%= link_to "🚪 Login", login_path %>
+    <%= link_to "📝 Signup", signup_path %>
+  <% end %>
+</div>
+
 
   <!-- Main Content -->
   <div class="content">
@@ -79,7 +92,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Dashboard</a>
+        <a class="navbar-brand" href="#">Tournament Management System</a>
         <div class="ms-auto">
           <div class="dropdown">
             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
