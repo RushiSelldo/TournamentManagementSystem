@@ -1,47 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Participant Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container mt-4">
-        <h2 class="fw-bold text-primary">🎮 Participant Dashboard</h2>
-        <p class="text-muted">Welcome, John Doe! Here are your upcoming tournaments.</p>
+<h2>🏆 My Joined Tournaments</h2>
 
-        <!-- 🏆 Joined Tournaments Section -->
-        <div class="mt-4">
-            <h4 class="fw-bold mb-3 text-success">🏆 Your Tournaments</h4>
-            <div class="table-responsive">
-                <table class="table table-striped text-center align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Name</th>
-                            <th>Date</th>
-                            <th>Location</th>
-                            <th>Details</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Champions League</td>
-                            <td>15 Mar 2025</td>
-                            <td>New York</td>
-                            <td><button class="btn btn-info btn-sm">View</button></td>
-                        </tr>
-                        <tr>
-                            <td>Pro League</td>
-                            <td>28 Mar 2025</td>
-                            <td>Los Angeles</td>
-                            <td><button class="btn btn-info btn-sm">View</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<% if @joined_tournaments.any? %>
+  <div class="list-group">
+    <% @joined_tournaments.each do |tournament| %>
+      <a href="<%= matches_participant_participant_path(tournament.id) %>" class="list-group-item list-group-item-action">
+        <strong><%= tournament.name %></strong> - Starts on <%= tournament.start_date.strftime("%B %d, %Y") %>
+      </a>
+    <% end %>
+  </div>
+<% else %>
+  <p class="text-muted">You haven't joined any tournaments yet.</p>
+<% end %>

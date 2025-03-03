@@ -1,0 +1,26 @@
+<h2>📅 Matches for <%= @tournament.name %></h2>
+
+<% if @matches.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Match</th>
+        <th>Date</th>
+        <th>Teams</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @matches.each do |match| %>
+        <tr>
+          <td>Match #<%= match.id %></td>
+          <td><%= match.scheduled_date.strftime("%B %d, %Y") %></td>
+          <td><%= match.teams.map(&:name).join(" vs ") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="text-muted">No matches scheduled yet.</p>
+<% end %>
+
+<%= link_to "⬅ Back", participant_dashboard_path, class: "btn btn-secondary" %>

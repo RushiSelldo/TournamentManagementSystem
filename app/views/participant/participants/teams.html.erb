@@ -1,0 +1,15 @@
+<h2>👥 Teams in <%= @tournament.name %></h2>
+
+<% if @teams.any? %>
+  <ul class="list-group">
+    <% @teams.each do |team| %>
+      <li class="list-group-item">
+        <strong><%= team.name %></strong> (Members: <%= team.users.count %>)
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="text-muted">No teams in this tournament yet.</p>
+<% end %>
+
+<%= link_to "⬅ Back", participant_dashboard_path, class: "btn btn-secondary" %>

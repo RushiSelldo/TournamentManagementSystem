@@ -65,9 +65,7 @@ class AuthController < ApplicationController
   end
 
   def upgrade_to_host
-    binding.pry
     if current_user.update(role: "host")
-      binding.pry
       flash[:notice] = "You are now a host! You can create tournaments."
       redirect_to new_host_tournament_path
     else

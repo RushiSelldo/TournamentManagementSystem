@@ -1,0 +1,34 @@
+<h1>New Match</h1>
+
+<%= form_with model: [:host, @tournament, @match], local: true do |form| %>
+  <div>
+    <%= form.label :team_1_id, "Team 1" %>
+    <%= form.collection_select :team_1_id, @tournament.teams, :id, :name, prompt: "Select Team 1" %>
+  </div>
+
+  <div>
+    <%= form.label :team_2_id, "Team 2" %>
+    <%= form.collection_select :team_2_id, @tournament.teams, :id, :name, prompt: "Select Team 2" %>
+  </div>
+
+  <div>
+    <%= form.label :scheduled_at, "Match Date & Time" %>
+    <%= form.datetime_select :scheduled_at %>
+  </div>
+
+  <div>
+    <%= form.label :score_team_1, "Score Team 1" %>
+    <%= form.number_field :score_team_1, min: 0 %>
+  </div>
+
+  <div>
+    <%= form.label :score_team_2, "Score Team 2" %>
+    <%= form.number_field :score_team_2, min: 0 %>
+  </div>
+
+  <div>
+    <%= form.submit "Create Match", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link_to "Back to Tournament", host_tournament_path(@tournament), class: "btn btn-secondary" %>

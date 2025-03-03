@@ -1,0 +1,20 @@
+<h2>Matches</h2>
+
+<% if policy(@tournament).update? %>
+  <%= link_to "Create Match", new_tournament_host_match_path(@tournament), class: "btn btn-primary" %>
+<% end %>
+
+<% if @tournament.matches.any? %>
+  <table>
+    <tr>
+      <th>Team 1</th>
+      <th>Team 2</th>
+      <th>Scheduled At</th>
+      <th>Score</th>
+      <th>Actions</th>
+    </tr>
+    <%= render @tournament.matches %>
+  </table>
+<% else %>
+  <p>No matches scheduled yet.</p>
+<% end %>

@@ -38,9 +38,25 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :host do
+    resources :tournaments do
+      resources :matches, only: [ :new, :create, :edit, :update, :destroy ]
+    end
+  end
+
+
 
   namespace :participant do
     get "dashboard", to: "participants#index"
+    get "available_tournaments", to: "participants#available", as: "available_tournaments"
+    resources :participants, only: [ :index ] do
+      member do
+        post :join
+        delete :leave
+        get :matches
+        get :teams
+      end
+    end
   end
 
 

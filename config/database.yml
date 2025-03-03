@@ -51,10 +51,13 @@ default: &default
 
 development:
   <<: *default
+  
   database: myDb
 
 test:
   <<: *default
+  username: user
+  password: postgres
   database: myrailsapp_test
 
 production:

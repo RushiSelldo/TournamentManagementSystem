@@ -1,8 +1,57 @@
-<h1><%= @tournament.name %></h1>
+<h1 class="mb-4"><%= @tournament.name %></h1>
 
-<p><strong>Location:</strong> <%= @tournament.location %></p>
-<p><strong>Start Date:</strong> <%= @tournament.start_date %></p>
+<p><strong>📍 Location:</strong> <%= @tournament.location %></p>
+<p><strong>📅 Start Date:</strong> <%= @tournament.start_date.strftime("%d %b %Y") %></p>
 
-<%= link_to "✏️ Edit Tournament", edit_host_tournament_path(@tournament) %> |
-<%= button_to "❌ Delete Tournament", host_tournament_path(@tournament), method: :delete, data: { confirm: "Are you sure?" } %> |
-<%= link_to "Back to Tournaments", host_tournaments_path %>
+<% if policy(@tournament).update? %>
+  <div class="btn-group mb-3">
+    <%= link_to "✏️ Edit", edit_host_tournament_path(@tournament), class: "btn btn-outline-warning btn-sm", title: "Edit Tournament", data: { bs_toggle: "tooltip" } %>
+    <%= button_to "❌ Delete", host_tournament_path(@tournament), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger btn-sm", title: "Delete Tournament", data: { bs_toggle: "tooltip" } %>
+  </div>
+<% end %>
+
+<%= link_to "⬅️ Back to Tournaments", host_tournaments_path, class: "btn btn-outline-secondary btn-sm mb-4" %>
+
+<hr>
+
+<h2 class="mt-4 mb-3">🏆 Matches</h2>
+
+<% if policy(@tournament).update? %>
+  <%= link_to "➕ Create Match", new_host_tournament_match_path(@tournament), class: "btn btn-success btn-sm mb-3", title: "Add a new match", data: { bs_toggle: "tooltip" } %>
+<% end %>
+
+<% if @tournament.matches.any? %>
+  <table class="table table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>🏅 Team 1</th>
+        <th>🏅 Team 2</th>
+        <th>📆 Scheduled At</th>
+        <th>⚽ Score</th>
+        <% if policy(@tournament).update? %>
+          <th>⚙️ Actions</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tournament.matches.each do |match| %>
+        <tr>
+          <td><strong><%= match.team_1.name %></strong></td>
+          <td><strong><%= match.team_2.name %></strong></td>
+          <td><%= match.scheduled_at.strftime("%d %b %Y, %H:%M") %></td>
+          <td><span class="badge bg-info text-dark"><%= match.score_team_1 %> - <%= match.score_team_2 %></span></td>
+          <% if policy(match).update? %>
+            <td>
+              <div class="btn-group">
+                <%= link_to "✏️", edit_host_tournament_match_path(@tournament, match), class: "btn btn-outline-warning btn-sm", title: "Edit Match", data: { bs_toggle: "tooltip" } %>
+                <%= button_to "❌", host_tournament_match_path(@tournament, match), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger btn-sm", title: "Delete Match", data: { bs_toggle: "tooltip" } %>
+              </div>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="alert alert-warning">⚠️ No matches scheduled yet.</p>
+<% end %>

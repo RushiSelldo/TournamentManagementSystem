@@ -1,0 +1,20 @@
+<h1>Available Tournaments</h1>
+
+<% if @available_tournaments.any? %>
+  <ul class="list-group">
+    <% @available_tournaments.each do |tournament| %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong><%= tournament.name %></strong>
+          <br>
+          <small>Starts on <%= tournament.start_date.strftime("%B %d, %Y") %></small>
+        </div>
+        <div>
+          <%= button_to "Join", join_participant_participant_path(tournament), method: :post, class: "btn btn-primary btn-sm" %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No available tournaments at the moment.</p>
+<% end %>

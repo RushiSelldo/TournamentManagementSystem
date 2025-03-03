@@ -1,0 +1,12 @@
+<tr>
+  <td><%= match.team_1.name %></td>
+  <td><%= match.team_2.name %></td>
+  <td><%= match.scheduled_at.strftime("%d %b %Y, %H:%M") %></td>
+  <td><%= match.score_team_1 %> - <%= match.score_team_2 %></td>
+  <% if policy(match).update? %>
+    <td>
+      <%= link_to "Edit", edit_host_tournament_match_path(match.tournament, match), class: "btn btn-warning" %>
+      <%= link_to "Delete", host_tournament_match_path(match.tournament, match), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    </td>
+  <% end %>
+</tr>

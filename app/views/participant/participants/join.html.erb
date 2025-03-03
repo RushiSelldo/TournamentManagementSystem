@@ -1,0 +1,7 @@
+<h2>➕ Join Tournament</h2>
+
+<p>Are you sure you want to join <strong><%= @tournament.name %></strong>?</p>
+
+<%= button_to "Join Tournament", join_participant_participant_path(@tournament), method: :post, class: "btn btn-success" %>
+
+<%= link_to "Cancel", participant_dashboard_path, class: "btn btn-secondary" %>

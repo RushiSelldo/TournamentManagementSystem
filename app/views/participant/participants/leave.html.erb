@@ -1,0 +1,7 @@
+<h2>🚪 Leave Tournament</h2>
+
+<p>Are you sure you want to leave <strong><%= @tournament.name %></strong>?</p>
+
+<%= button_to "Leave Tournament", leave_participant_participant_path(@tournament), method: :delete, class: "btn btn-danger" %>
+
+<%= link_to "Cancel", participant_dashboard_path, class: "btn btn-secondary" %>

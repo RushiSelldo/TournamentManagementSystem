@@ -5,8 +5,13 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <%= stylesheet_link_tag "application", media: "all" %>
-  <%= javascript_include_tag "application" %>
+  <!-- Bootstrap CSS CDN -->
+  <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css", media: "all" %>
+  <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" %>
+
+  <!-- Your application styles and scripts -->
+  <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
 
   <%= yield :head %>
 </head>
@@ -15,18 +20,53 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">🎮 Participant Dashboard</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
+          <!-- Home -->
           <li class="nav-item">
             <%= link_to "🏠 Home", root_path, class: "nav-link" %>
           </li>
+          <!-- My Tournaments (Joined) -->
           <li class="nav-item">
-<%= button_to "➕ Create Tournament", upgrade_to_host_path, method: :patch, class: "btn btn-sm btn-primary mx-2" %>
+            <%= link_to "📋 My Tournaments", participant_participants_path, class: "nav-link" %>
           </li>
+          <!-- Available Tournaments to Join -->
+          <li class="nav-item">
+            <%= link_to "Join Tournament", participant_available_tournaments_path, class: "nav-link" %>
+          </li>
+          <!-- Dropdown for Joined Tournaments -->
+          <% if @joined_tournaments.present? %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="joinedTournamentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                🎮 Joined Tournaments
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="joinedTournamentsDropdown">
+                <% @joined_tournaments.each do |tournament| %>
+                  <li>
+                    <%= link_to "#{tournament.name} - Matches", participant_matches_path(id: tournament.id), class: "dropdown-item" %>
+                  </li>
+                  <li>
+                    <%= link_to "#{tournament.name} - Teams", participant_teams_path(id: tournament.id), class: "dropdown-item" %>
+                  </li>
+                  <li>
+                    <%= link_to "Leave #{tournament.name}", leave_participant_path(id: tournament.id),
+                      method: :delete,
+                      data: { confirm: "Are you sure you want to leave #{tournament.name}?" },
+                      class: "dropdown-item text-danger" %>
+                  </li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+          <!-- Create Tournament (Upgrade to Host) -->
+          <li class="nav-item">
+            <%= button_to "➕ Create Tournament", upgrade_to_host_path, method: :patch, class: "btn btn-sm btn-primary mx-2" %>
+          </li>
+          <!-- Logout -->
           <li class="nav-item">
             <%= link_to "🚪 Logout", logout_path, method: :delete, class: "nav-link text-danger" %>
           </li>
@@ -36,8 +76,17 @@
   </nav>
 
   <div class="container mt-4">
+    <% if notice %>
+      <div class="alert alert-success"><%= notice %></div>
+    <% end %>
+    <% if alert %>
+      <div class="alert alert-danger"><%= alert %></div>
+    <% end %>
+    
     <%= yield %>
   </div>
 
+  <!-- Bootstrap JS Bundle (includes Popper) CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 </body>
 </html>
