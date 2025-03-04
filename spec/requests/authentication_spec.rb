@@ -28,6 +28,8 @@ RSpec.describe AuthController, type: :request do
     context 'with valid credentials' do
       let(:login_params) { { email: user.email, password: 'password' } }
 
+
+
       it 'logs in the user and sets a cookie' do
         post login_path, params: login_params
 
