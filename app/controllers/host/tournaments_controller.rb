@@ -4,9 +4,7 @@ class Host::TournamentsController < ApplicationController
   before_action :set_tournament, only: [ :show, :edit, :update, :destroy ]
   before_action :authorize_tournament, only: [ :new, :create ]
   before_action :authorize_existing_tournament, only: [ :edit, :update, :destroy ]
-
-  include Pundit
-
+  include Pundit::Authorization
   def count
     authorize Tournament # Ensure public access
     total_tournaments = Tournament.count
