@@ -13,6 +13,10 @@ Rails.application.routes.draw do
   get "/login", to: "auth#login"
   post "/login", to: "auth#authenticate"
 
+  post "/forgot_password", to: "auth#forgot_password"
+post "/reset_password", to: "auth#reset_password"
+
+
   # get "participant/dashboard", to: "participants#index"
 
   patch "/upgrade_to_host", to: "auth#upgrade_to_host"

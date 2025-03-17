@@ -1,6 +1,6 @@
 class AuthController < ApplicationController
   layout false, only: [ :signup, :login ]
-  skip_before_action :authenticate_user!, only: [ :signup, :login, :create_user, :authenticate ]
+  skip_before_action :authenticate_user!, only: [ :signup, :login, :create_user, :authenticate, :forgot_password, :reset_password ]
   before_action :redirect_if_authenticated, only: [ :signup, :login ]
 
 
@@ -87,6 +87,41 @@ class AuthController < ApplicationController
     end
   end
 
+  def forgot_password
+    user = User.find_by(email: params[:email])
+
+    if user
+      token = generate_reset_token(user.id)
+      render json: { reset_token: token, message: "Use this token to reset your password." }, status: :ok
+    else
+      render json: { error: "Email not found" }, status: :not_found
+    end
+  end
+
+  # 2️⃣ User submits new password with reset token
+  def reset_password
+    token = params[:token]
+    new_password = params[:password]
+
+    return render json: { error: "Token and password are required" }, status: :bad_request unless token.present? && new_password.present?
+
+    begin
+      payload = decode_reset_token(token)
+      user = User.find_by(id: payload["user_id"])
+
+      if user
+        user.update(password: new_password)
+        render json: { message: "Password successfully reset" }, status: :ok
+      else
+        render json: { error: "Invalid token or user not found" }, status: :unauthorized
+      end
+    rescue JWT::ExpiredSignature
+      render json: { error: "Reset token expired" }, status: :unauthorized
+    rescue JWT::DecodeError
+      render json: { error: "Invalid reset token" }, status: :unauthorized
+    end
+  end
+
   private
 
   def user_params
@@ -104,7 +139,6 @@ class AuthController < ApplicationController
       redirect_to profile_path, notice: "You are already logged in."
     end
   end
-  # Error Handling Methods
 
   def handle_internal_server_error(error)
     Rails.logger.error("Internal Server Error: #{error.message}")
@@ -119,7 +153,7 @@ class AuthController < ApplicationController
     render json: { error: "Resource not found" }, status: :not_found
   end
 
-  # Helper Methods for Basic Error Handling
+
 
   def render_missing_params
     render json: { error: "Email and password are required" }, status: :bad_request
@@ -150,5 +184,19 @@ class AuthController < ApplicationController
       end
       format.json { render json: { errors: user.errors.full_messages }, status: :unprocessable_entity }
     end
+  end
+
+
+
+  private
+
+
+  def generate_reset_token(user_id)
+    JWT.encode({ user_id: user_id, exp: 15.minutes.from_now.to_i }, SECRET_KEY, "HS256")
+  end
+
+
+  def decode_reset_token(token)
+    JWT.decode(token, SECRET_KEY, true, algorithm: "HS256").first
   end
 end

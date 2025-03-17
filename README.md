@@ -8,14 +8,17 @@ Here is the ER diagram for the project:
 =======
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+🏆 Tournament Management System
+This is a Tournament Management System built with Ruby on Rails and PostgreSQL. It allows users to create, manage tournaments with role-based authentication and authorization using Pundit and JWT for secure user authentication.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby Version
+    Ruby 3.4.1
+    Rails 8.0.1
 
 * System dependencies
+    PostgreSQL - Database
 
 * Configuration
 
@@ -25,8 +28,3 @@ Things you may want to cover:
 
 * How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
