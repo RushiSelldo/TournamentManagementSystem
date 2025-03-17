@@ -60,6 +60,7 @@ group :development, :test do
   gem "brakeman", require: false
 
   gem "rspec-rails"
+  gem "shoulda-matchers", "~> 5.0"
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
