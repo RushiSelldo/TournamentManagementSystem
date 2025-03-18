@@ -17,6 +17,20 @@ This is a Tournament Management System built with Ruby on Rails and PostgreSQL. 
 | **JWT** | User authentication                      |
 | **Tailwind CSS** | Styling                                  |
 
+## **👤 User Roles**
+
+* **Admin:** Can create and manage all tournaments.
+* **Organizer:** Can create and manage their own tournaments.
+* **Participant:** Can register for tournaments and view schedules.
+
+## **✨ Features**
+
+✔️ User signup and login with JWT authentication
+✔️ Role-based access control with Pundit
+✔️ Tournament creation and management
+✔️ Registration for tournaments
+✔️ Matches creation and management
+
 ## **Installation Steps**
 
 1.  **Clone the repository:**
@@ -48,16 +62,5 @@ This is a Tournament Management System built with Ruby on Rails and PostgreSQL. 
 6.  **Run the application:**
     Open your web browser and navigate to `http://localhost:3000`.
 
-## **👤 User Roles**
 
-* **Admin:** Can create and manage all tournaments.
-* **Organizer:** Can create and manage their own tournaments.
-* **Participant:** Can register for tournaments and view schedules.
 
-## **✨ Features**
-
-✔️ User signup and login with JWT authentication
-✔️ Role-based access control with Pundit
-✔️ Tournament creation and management
-✔️ Registration for tournaments
-✔️ Matches creation and management
