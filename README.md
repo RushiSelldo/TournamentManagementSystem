@@ -11,7 +11,6 @@ Here is the ER diagram for the project:
 🏆 Tournament Management System
 This is a Tournament Management System built with Ruby on Rails and PostgreSQL. It allows users to create, manage tournaments with role-based authentication and authorization using Pundit and JWT for secure user authentication.
 
-Things you may want to cover:
 
 * Ruby Version
     Ruby 3.4.1
@@ -20,11 +19,16 @@ Things you may want to cover:
 * System dependencies
     PostgreSQL - Database
 
-* Configuration
+* Tech Stack
 
-* Database creation
+## 🚀 **Tech Stack**
+| Tech             | Description                              |
+|------------------|------------------------------------------|
+| **Ruby**          | Programming language                     |
+| **Rails**          | Backend framework                        |
+| **PostgreSQL**     | Database                                  |
+| **Pundit**         | Authorization                             |
+| **JWT**            | User authentication                      |
+| **Tailwind CSS**    | Styling                                  |
 
-* Database initialization
-
-* How to run the test suite
 

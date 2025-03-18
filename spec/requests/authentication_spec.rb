@@ -20,7 +20,7 @@ RSpec.describe AuthController, type: :request do
       end
     end
 
-    context 'when email is alr    eady taken' do
+    context 'when email is already taken' do
       before { create(:user, email: 'rushi@gmail.com') }
       it 'does not create a new user' do
         post signup_path, params: params

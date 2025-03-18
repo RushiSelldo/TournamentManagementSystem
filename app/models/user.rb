@@ -16,9 +16,8 @@ class User < ApplicationRecord
   private
 
   def downcase_email
-    self.email = email.downcase
+    self.email = email&.downcase
   end
-
   def set_default_role
     self.role ||= "participant"
   end
