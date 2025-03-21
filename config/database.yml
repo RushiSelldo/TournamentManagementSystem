@@ -61,8 +61,7 @@ test:
   database: myrailsapp_test
 
 production:
-  <<: *default
-  database: myrailsapp_production
-  username: myrailsuser
-  password: <%= ENV['MYRAILSAPP_DATABASE_PASSWORD'] %>
-  host: localhost
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  url: <%= ENV['postgresql://tournamentdb_gmj5_user:LYsWTN276foxRqf30SaD5CQNaIoyR5cX@dpg-cvelbl1c1ekc73egbj00-a.oregon-postgres.render.com/tournamentdb_gmj5'] %>

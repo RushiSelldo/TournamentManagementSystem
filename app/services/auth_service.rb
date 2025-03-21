@@ -9,11 +9,12 @@ class AuthService
   def signup(user_params)
     user = User.new(user_params)
     if user.save
-      { success: true, user: user }
+      { success: true }
     else
-      { success: false, errors: user.errors.full_messages }
+      { success: false, errors: user.errors }
     end
   end
+
 
 
   def authenticate(email, password)

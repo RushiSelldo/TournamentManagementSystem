@@ -6,6 +6,8 @@ class AuthController < ApplicationController
   rescue_from StandardError, with: :handle_internal_server_error
   rescue_from ActiveRecord::RecordInvalid, with: :handle_unprocessable_entity
   rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
+  rescue_from ActiveRecord::RecordNotUnique, with: :handle_duplicate_email
+
 
   def signup
     @user = User.new
@@ -120,18 +122,33 @@ class AuthController < ApplicationController
     redirect_to profile_path, notice: "You are already logged in." if current_user
   end
 end
-
-def respond_with_errors(errors)
-  respond_to do |format|
-    format.html do
-      flash[:alert] = errors.join(", ")
-      redirect_to signup_path
-    end
-    format.json do
-      render json: { errors: errors }, status: :unprocessable_entity
-    end
-  end
+def handle_duplicate_email(error)
+  Rails.logger.error("Duplicate Record Error: #{error.message}")
+  render json: { error: "Email already taken" }, status: :unprocessable_entity
 end
+
+
+# def respond_with_errors(errors)
+#   # if errors.respond_to?(:errors)
+#   #   binding.pry
+#   #   error_messages = errors.errors.full_messages
+#   # elsif errors.is_a?(Array)
+#   #   error_messages = errors
+#   # else
+#   #   error_messages = [ "An unknown error occurred." ] # Or handle this case differently
+#   # end
+#   binding.pry
+
+#   respond_to do |format|
+#     format.html do
+#       flash[:alert] = error_messages.join(", ")
+#       redirect_to signup_path
+#     end
+#     format.json do
+#       render json: { errors: error_messages }, status: :unprocessable_entity
+#     end
+#   end
+# end
 
 
 def handle_internal_server_error(error)
@@ -170,12 +187,12 @@ def render_unauthorized
   end
 end
 
-def respond_with_errors(user)
+def respond_with_errors(errors)
   respond_to do |format|
     format.html do
-      flash.now[:alert] = user.errors.full_messages.join(", ")
+      flash.now[:alert] = errors.full_messages.join(", ")
       render :signup, status: :unprocessable_entity
     end
-    format.json { render json: { errors: user.errors.full_messages }, status: :unprocessable_entity }
+    format.json { render json: { errors: errors.full_messages }, status: :unprocessable_entity }
   end
 end

@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActiveRecord::RecordNotUnique, with: :handle_duplicate_email
 
   private
 
@@ -28,6 +29,12 @@ class ApplicationController < ActionController::Base
         format.json { render json: { error: "Unauthorized. Please log in." }, status: :unauthorized }
       end
     end
+  end
+
+
+  def handle_duplicate_email(error)
+    Rails.logger.error("Duplicate Record Error: #{error.message}")
+    render json: { error: "Email already taken" }, status: :unprocessable_entity
   end
 
   def current_user

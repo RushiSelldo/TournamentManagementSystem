@@ -6,9 +6,8 @@ Here is the ER diagram for the project:
 
 ![ER Diagram](app/assets/images/erd.png)
 =======
-# README
 
-🏆 Tournament Management System
+## 🏆 Tournament Management System
 This is a Tournament Management System built with Ruby on Rails and PostgreSQL. It allows users to create, manage tournaments with role-based authentication and authorization using Pundit and JWT for secure user authentication.
 
 
