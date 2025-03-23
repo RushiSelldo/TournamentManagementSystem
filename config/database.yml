@@ -64,4 +64,4 @@ production:
   adapter: postgresql
   encoding: unicode
   pool: 5
-  url: <%= ENV['postgresql://tournamentdb_gmj5_user:LYsWTN276foxRqf30SaD5CQNaIoyR5cX@dpg-cvelbl1c1ekc73egbj00-a.oregon-postgres.render.com/tournamentdb_gmj5'] %>
+  url: <%= ENV['DATABASE_URL'] %>

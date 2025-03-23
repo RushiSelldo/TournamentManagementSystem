@@ -91,4 +91,6 @@ Rails.application.configure do
 config.assets.compile = true
 config.log_level = :info
 config.require_master_key = true
+config.action_cable.mount_path = nil
+config.action_cable.disable_request_forgery_protection = true
 end
