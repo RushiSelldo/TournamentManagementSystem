@@ -47,16 +47,16 @@
               <ul class="dropdown-menu" aria-labelledby="joinedTournamentsDropdown">
                 <% @joined_tournaments.each do |tournament| %>
                   <li>
-                    <%= link_to "#{tournament.name} - Matches", participant_matches_path(id: tournament.id), class: "dropdown-item" %>
+                    <%= link_to "#{tournament.name} - Matches", matches_participant_participant_path(tournament.id), class: "dropdown-item" %>
                   </li>
                   <li>
-                    <%= link_to "#{tournament.name} - Teams", participant_teams_path(id: tournament.id), class: "dropdown-item" %>
                   </li>
+                  <%= link_to "#{tournament.name} - Teams", teams_participant_participant_path(tournament.id), class: "dropdown-item" %>
                   <li>
-                    <%= link_to "Leave #{tournament.name}", leave_participant_path(id: tournament.id),
-                      method: :delete,
-                      data: { confirm: "Are you sure you want to leave #{tournament.name}?" },
-                      class: "dropdown-item text-danger" %>
+                   <%= link_to "Leave #{tournament.name}", leave_participant_participant_path(tournament.id),
+                    method: :delete,
+                    data: { confirm: "Are you sure you want to leave #{tournament.name}?" },
+                    class: "dropdown-item text-danger" %>
                   </li>
                 <% end %>
               </ul>

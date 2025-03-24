@@ -7,7 +7,7 @@ module Participant
     before_action :authorize_participant
 
     def index
-      @joined_tournaments = current_user.teams.includes(:tournament).map(&:tournament)
+      @joined_tournaments = Tournament.joins(:teams).where(teams: { id: current_user.teams.pluck(:id) })
     end
 
     def available

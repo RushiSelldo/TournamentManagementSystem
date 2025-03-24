@@ -43,16 +43,20 @@ module Participant
     end
 
     def find_or_create_team
-      team = @tournament.teams
-                .left_joins(:team_members)
-                .group("teams.id")
-                .having("COUNT(team_members.id) < ?", 5)
-                .first
+      # team = @tournament.teams
+      #           .left_joins(:team_members)
+      #           .group("teams.id")
+      #           .having("COUNT(team_members.id) < ?", 5)
+      #           .first
 
-      if team.nil?
-        team = @tournament.teams.create(name: "Team #{SecureRandom.hex(3)}")
-        return nil unless team.persisted?
-      end
+      # if team.nil?
+      #   team = @tournament.teams.create(name: "Team #{SecureRandom.hex(3)}")
+      #   return nil unless team.persisted?
+      # end
+
+      # team
+      team = @tournament.teams.create(name: "Team #{SecureRandom.hex(3)}")
+      return nil unless team.persisted?
 
       team
     end
