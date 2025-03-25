@@ -19291,7 +19291,7 @@
   // app/javascript/components/App.jsx
   var import_react = __toESM(require_react());
   var App = () => {
-    return /* @__PURE__ */ import_react.default.createElement("h1", null, "Welcome to the Dummy react app");
+    return /* @__PURE__ */ import_react.default.createElement("div", null, /* @__PURE__ */ import_react.default.createElement("h1", null, "Welcome to the Tournament Management System"), /* @__PURE__ */ import_react.default.createElement("p", null, "Organize and manage tournaments with ease. Create, join, and track matches in real-time!"));
   };
   var App_default = App;
 

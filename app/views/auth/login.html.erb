@@ -39,6 +39,21 @@
         <p class="mb-0 text-muted">Don't have an account?</p>
         <%= link_to "Sign up", signup_path, class: "text-primary fw-semibold text-decoration-none" %>
       </div>
+      <% if notice %>
+  <div id="flash-notice" class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 mt-3 me-3 small shadow-sm" role="alert">
+    <%= notice %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
+ 
+ 
+<% if alert %>
+  <div id="flash-notice" class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 mt-3 me-3 small shadow-sm" role="alert">
+    <%= alert %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
+ 
     </div>
   </div>
 

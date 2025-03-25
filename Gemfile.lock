@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/untitledkingdom/mina-puma.git
+  revision: 581a2048d82998328a5c9581a45883e0f3b28d06
+  specs:
+    mina-puma (1.1.0)
+      mina (~> 1.2.0)
+      puma (>= 2.13)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -160,6 +168,8 @@ GEM
     marcel (1.0.4)
     matrix (0.4.2)
     method_source (1.1.0)
+    mina (1.2.5)
+      rake
     mini_mime (1.1.5)
     minitest (5.25.4)
     msgpack (1.8.0)
@@ -399,6 +409,8 @@ DEPENDENCIES
   jsbundling-rails
   jwt
   kamal
+  mina
+  mina-puma!
   pg
   propshaft
   pry

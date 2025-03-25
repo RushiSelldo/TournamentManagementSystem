@@ -48,6 +48,7 @@ class AuthController < ApplicationController
         format.json { render json: { message: "Logged in successfully", token: result[:token] }, status: :ok }
       end
     else
+      # redirect_to login_path
       render_invalid_credentials
     end
   end
@@ -174,7 +175,7 @@ def render_invalid_credentials
   respond_to do |format|
     format.html do
       flash.now[:alert] = "Invalid email or password"
-      render :login, status: :unprocessable_entity
+      redirect_to login_path, status: :found
     end
     format.json { render json: { error: "Invalid email or password" }, status: :unauthorized }
   end

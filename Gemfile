@@ -24,6 +24,8 @@ gem "pundit"
 gem "bcrypt"
 gem "jwt"
 gem "pry"
+gem "mina", require: false
+gem "mina-puma", require: false,  github: "untitledkingdom/mina-puma"
 
 # gem "bootstrap", "~> 5.3"
 # gem "sassc-rails" # Enables SCSS support
