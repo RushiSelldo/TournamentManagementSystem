@@ -19291,7 +19291,7 @@
   // app/javascript/components/App.jsx
   var import_react = __toESM(require_react());
   var App = () => {
-    return /* @__PURE__ */ import_react.default.createElement("div", null, /* @__PURE__ */ import_react.default.createElement("h1", null, "React Integrated "));
+    return /* @__PURE__ */ import_react.default.createElement("div", null);
   };
   var App_default = App;
 
