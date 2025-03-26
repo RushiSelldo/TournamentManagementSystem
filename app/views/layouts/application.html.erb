@@ -10,51 +10,76 @@
   <!-- Bootstrap & Icons -->
   <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css", media: "all" %>
   <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js", defer: true %>
-  <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
   <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
 
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <%= yield :head %> <%# Allows additional head content per view %>
-
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #f8f9fa;
+      background-color: #f4f4f9;
     }
+
+    /* Sidebar Styling */
     .sidebar {
       height: 100vh;
       width: 250px;
       position: fixed;
       top: 0;
       left: 0;
-      background-color: #343a40;
+      background-color: #1e1e2f; /* Dark background */
       padding-top: 20px;
     }
+
+    .sidebar h4 {
+      color: #fff;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #444;
+    }
+
     .sidebar a {
       padding: 12px;
       text-decoration: none;
       font-size: 18px;
-      color: #ddd;
+      color: #ccc;
       display: block;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      border-radius: 5px;
+      margin: 4px 10px;
     }
+
     .sidebar a:hover {
-      background-color: #495057;
+      background-color: #4b0082; /* Indigo hover */
       color: #fff;
     }
+
+    /* Active Tab Styling */
+    .sidebar a.active {
+      background-color: #6a5acd; /* Slate Blue */
+      color: #fff;
+      font-weight: bold;
+    }
+
+    /* Content Styling */
     .content {
       margin-left: 260px;
       padding: 20px;
     }
-    .card {
-      border-radius: 10px;
-    }
+
+    /* Navbar Styling */
     .navbar {
-      background-color: #343a40;
+      background-color: #1e1e2f;
     }
+
     .navbar .nav-link {
       color: white !important;
+    }
+
+    /* Flash Messages */
+    .alert {
+      border-radius: 8px;
     }
   </style>
 </head>
@@ -62,74 +87,71 @@
 <body>
 <!-- Sidebar -->
 <div class="sidebar">
-  <h4 class="text-center text-light">🏆 Tournaments</h4>
+  <h4 class="text-center">🏆 Tournaments</h4>
 
-  <%= link_to "🏠 Dashboard", root_path %>
-  <%= link_to "📅 Upcoming Tournaments", host_tournaments_path %>
+  <%= link_to "🏠 Dashboard", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
+  <%= link_to "📅 Upcoming Tournaments", host_tournaments_path(joined: nil), class: "nav-link #{'active' if request.fullpath == host_tournaments_path}" %>
 
   <% if current_user %>
-  <%= link_to "📊 My Tournaments", my_tournaments_host_tournaments_path %>
-    <%= link_to "👥 Joined Tournaments", host_tournaments_path(joined: true) %>
-    <%= link_to "⚙️ Manage Profile", profile_path %>
-    <%= link_to "📩 Notifications", "#" %> <!-- Placeholder for future notifications -->
-    <%= link_to "🏆 Leaderboard", "#" %> <!-- Placeholder for future leaderboard -->
-    <% if current_user.role == "participant" %>
-<%= link_to "🎮 My Dashboard", participant_dashboard_path, class: "nav-link" %>
-<% end %>
+    <%= link_to "📊 My Tournaments", my_tournaments_host_tournaments_path, class: "nav-link #{'active' if current_page?(my_tournaments_host_tournaments_path)}" %>
+    <%= link_to "👥 Joined Tournaments", host_tournaments_path(joined: true), class: "nav-link #{'active' if params[:joined] == 'true'}" %>
+    <%= link_to "⚙️ Manage Profile", profile_path, class: "nav-link #{'active' if current_page?(profile_path)}" %>
+    <%= link_to "📩 Notifications", "#", class: "nav-link" %>
+    <%= link_to "🏆 Leaderboard", "#", class: "nav-link" %>
 
+    <% if current_user.role == "participant" %>
+      <%= link_to "🎮 My Dashboard", participant_dashboard_path, class: "nav-link #{'active' if current_page?(participant_dashboard_path)}" %>
+    <% end %>
 
     <hr class="text-light">
-    <%= link_to "🚪 Logout", logout_path, method: :delete, class: "text-danger" %>
+    <%= link_to "🚪 Logout", logout_path, method: :delete, class: "nav-link text-danger" %>
   <% else %>
-    <%= link_to "🚪 Login", login_path %>
-    <%= link_to "📝 Signup", signup_path %>
+    <%= link_to "🚪 Login", login_path, class: "nav-link #{'active' if current_page?(login_path)}" %>
+    <%= link_to "📝 Signup", signup_path, class: "nav-link #{'active' if current_page?(signup_path)}" %>
   <% end %>
 </div>
 
-
-  <!-- Main Content -->
-  <div class="content">
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Tournament Management System</a>
-        <div class="ms-auto">
-          <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-              <i class="bi bi-person-circle"></i> <%= current_user ? current_user.name : "Guest User" %>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <% if current_user %>
-                <li><%= link_to "Logout", logout_path, method: :delete, class: "dropdown-item" %></li>
-              <% else %>
-                <li><%= link_to "Login", login_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Signup", signup_path, class: "dropdown-item" %></li>
-              <% end %>
-            </ul>
-          </div>
+<!-- Main Content -->
+<div class="content">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Tournament Management System</a>
+      <div class="ms-auto">
+        <div class="dropdown">
+          <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i> <%= current_user ? current_user.name : "Guest User" %>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <% if current_user %>
+              <li><%= link_to "Logout", logout_path, method: :delete, class: "dropdown-item" %></li>
+            <% else %>
+              <li><%= link_to "Login", login_path, class: "dropdown-item" %></li>
+              <li><%= link_to "Signup", signup_path, class: "dropdown-item" %></li>
+            <% end %>
+          </ul>
         </div>
       </div>
-    </nav>
-
-    <!-- Flash Messages -->
-    <% if flash.any? %>
-      <div class="container mt-3">
-        <% flash.each do |type, message| %>
-          <div class="alert <%= bootstrap_class_for_flash(type) %> alert-dismissible fade show" role="alert">
-            <%= message %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-
-    <!-- Dynamic Page Content -->
-    <div class="container mt-4">
-      <%= yield %> <%# This is where individual views will be inserted %>
     </div>
+  </nav>
 
+  <!-- Flash Messages -->
+  <% if flash.any? %>
+    <div class="container mt-3">
+      <% flash.each do |type, message| %>
+        <div class="alert <%= bootstrap_class_for_flash(type) %> alert-dismissible fade show" role="alert">
+          <%= message %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Dynamic Page Content -->
+  <div class="container mt-4">
+    <%= yield %>
   </div>
+</div>
 
 </body>
 </html>
