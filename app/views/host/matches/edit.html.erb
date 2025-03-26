@@ -1,34 +1,47 @@
-<h1>Edit Match</h1>
+<h1 class="mb-4 text-center">Edit Match</h1>
 
-<%= form_with model: [:host, @tournament, @match], local: true do |form| %>
-  <div>
-    <%= form.label :team_1_id, "Team 1" %>
-    <%= form.collection_select :team_1_id, @tournament.teams, :id, :name %>
-  </div>
+<div class="card shadow-sm p-4">
+  <%= form_with model: [:host, @tournament, @match], local: true do |form| %>
+    <div class="row mb-3">
+      <!-- Team 1 Selection -->
+      <div class="col-md-6">
+        <%= form.label :team_1_id, "Team 1", class: "form-label" %>
+        <%= form.collection_select :team_1_id, @tournament.teams, :id, :name, {}, { class: "form-select" } %>
+      </div>
 
-  <div>
-    <%= form.label :team_2_id, "Team 2" %>
-    <%= form.collection_select :team_2_id, @tournament.teams, :id, :name %>
-  </div>
+      <!-- Team 2 Selection -->
+      <div class="col-md-6">
+        <%= form.label :team_2_id, "Team 2", class: "form-label" %>
+        <%= form.collection_select :team_2_id, @tournament.teams, :id, :name, {}, { class: "form-select" } %>
+      </div>
+    </div>
 
-  <div>
-    <%= form.label :scheduled_at, "Match Date & Time" %>
-    <%= form.datetime_select :scheduled_at %>
-  </div>
+    <div class="row mb-3">
+      <!-- Match Date & Time -->
+      <div class="col-md-6">
+        <%= form.label :scheduled_at, "Match Date & Time", class: "form-label" %>
+        <%= form.datetime_select :scheduled_at, {}, class: "form-control" %>
+      </div>
+    </div>
 
-  <div>
-    <%= form.label :score_team_1, "Score Team 1" %>
-    <%= form.number_field :score_team_1, min: 0 %>
-  </div>
+    <div class="row mb-3">
+      <!-- Score for Team 1 -->
+      <div class="col-md-6">
+        <%= form.label :score_team_1, "Score Team 1", class: "form-label" %>
+        <%= form.number_field :score_team_1, min: 0, class: "form-control" %>
+      </div>
 
-  <div>
-    <%= form.label :score_team_2, "Score Team 2" %>
-    <%= form.number_field :score_team_2, min: 0 %>
-  </div>
+      <!-- Score for Team 2 -->
+      <div class="col-md-6">
+        <%= form.label :score_team_2, "Score Team 2", class: "form-label" %>
+        <%= form.number_field :score_team_2, min: 0, class: "form-control" %>
+      </div>
+    </div>
 
-  <div>
-    <%= form.submit "Update Match", class: "btn btn-primary" %>
-  </div>
-<% end %>
-
-<%= link_to "Back to Tournament", host_tournament_path(@tournament), class: "btn btn-secondary" %>
+    <!-- Form Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+      <%= link_to "Back to Tournament", host_tournament_path(@tournament), class: "btn btn-secondary px-4" %>
+      <%= form.submit "Update Match", class: "btn btn-success px-4" %>
+    </div>
+  <% end %>
+</div>
