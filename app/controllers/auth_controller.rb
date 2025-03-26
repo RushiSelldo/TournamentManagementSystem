@@ -175,11 +175,12 @@ def render_invalid_credentials
   respond_to do |format|
     format.html do
       flash.now[:alert] = "Invalid email or password"
-      redirect_to login_path, status: :found
+      render :login, status: :unprocessable_entity, layout: false
     end
     format.json { render json: { error: "Invalid email or password" }, status: :unauthorized }
   end
 end
+
 
 def render_unauthorized
   respond_to do |format|
@@ -192,7 +193,7 @@ def respond_with_errors(errors)
   respond_to do |format|
     format.html do
       flash.now[:alert] = errors.full_messages.join(", ")
-      render :signup, status: :unprocessable_entity
+      render :signup, status: :unprocessable_entity, layout: false
     end
     format.json { render json: { errors: errors.full_messages }, status: :unprocessable_entity }
   end

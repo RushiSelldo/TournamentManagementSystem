@@ -36,6 +36,7 @@ post "/reset_password", to: "auth#reset_password"
    namespace :host do
     resources :tournaments do
       collection do
+        get "my_tournaments"
         get :count
         get :size
       end

@@ -68,7 +68,7 @@
   <%= link_to "📅 Upcoming Tournaments", host_tournaments_path %>
 
   <% if current_user %>
-    <%= link_to "📊 My Tournaments", host_tournaments_path(user_id: current_user.id) %>
+  <%= link_to "📊 My Tournaments", my_tournaments_host_tournaments_path %>
     <%= link_to "👥 Joined Tournaments", host_tournaments_path(joined: true) %>
     <%= link_to "⚙️ Manage Profile", profile_path %>
     <%= link_to "📩 Notifications", "#" %> <!-- Placeholder for future notifications -->

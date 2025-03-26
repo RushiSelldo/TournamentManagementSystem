@@ -2,103 +2,104 @@
   <title>Upcoming Tournaments</title>
 <% end %>
 
-<div class="row g-3">
-  <div class="col-md-4">
-    <div class="card shadow p-3 text-center">
-      <h5 class="fw-bold">🏆 Total Tournaments</h5>
-      <h2 class="text-primary"><%= Tournament.count %></h2>
+<div class="container mt-5">
+  <!-- Summary Cards -->
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 rounded-4 p-4 text-center">
+        <h5 class="fw-bold text-secondary">🏆 Total Tournaments</h5>
+        <h2 class="text-primary"><%= Tournament.count %></h2>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 rounded-4 p-4 text-center">
+        <h5 class="fw-bold text-secondary">👥 Total Participants</h5>
+        <h2 class="text-success">150</h2> <!-- Replace with actual count -->
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 rounded-4 p-4 text-center">
+        <h5 class="fw-bold text-secondary">🎯 Matches Played</h5>
+        <h2 class="text-danger">40</h2> <!-- Replace with actual count -->
+      </div>
     </div>
   </div>
 
-  <div class="col-md-4">
-    <div class="card shadow p-3 text-center">
-      <h5 class="fw-bold">👥 Total Participants</h5>
-      <h2 class="text-success">150</h2> <!-- Replace with actual count -->
-    </div>
-  </div>
-
-  <div class="col-md-4">
-    <div class="card shadow p-3 text-center">
-      <h5 class="fw-bold">🎯 Matches Played</h5>
-      <h2 class="text-danger">40</h2> <!-- Replace with actual count -->
-    </div>
-  </div>
-</div>
-
-<!-- Button for creating a tournament -->
-<% if policy(Tournament).create? %>
-  <div class="d-flex justify-content-start mt-4">
-    <%= link_to new_host_tournament_path, class: "btn btn-primary" do %>
-      <i class="fas fa-plus"></i> Create Tournament
-    <% end %>
-  </div>
-<% end %>
-
-<!-- Separate Sections for "Your Tournaments" & "Other Tournaments" -->
-<div class="mt-4">
-  
-  <!-- ✅ Your Tournaments -->
-  <h4 class="fw-bold mb-3 text-primary">🏆 Your Tournaments</h4>
-  <div class="table-responsive">
-    <table class="table table-striped text-center align-middle">
-      <thead class="table-dark">
-        <tr>
-          <th>Name</th>
-          <th>Date</th>
-          <th>Location</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @tournaments.select { |t| t.host_id == current_user.id }.each do |tournament| %>
-          <% if policy(tournament).show? %>
-            <tr>
-              <td><%= tournament.name %></td>
-              <td><%= tournament.start_date.strftime("%d %b %Y") %></td>
-              <td><%= tournament.location %></td>
-              <td>
-                <div class="btn-group">
-                  <%= link_to "View", host_tournament_path(tournament), class: "btn btn-sm btn-info" %>
-                  <% if policy(tournament).edit? %>
-                    <%= link_to "Edit", edit_host_tournament_path(tournament), class: "btn btn-sm btn-warning" %>
-                  <% end %>
-                  <% if policy(tournament).destroy? %>
-                    <%= button_to "Delete", host_tournament_path(tournament), method: :delete, 
-                      data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
-                  <% end %>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-
- <!-- ✅ Other Tournaments -->
-<h4 class="fw-bold mb-3 text-secondary mt-5">📅 Other Tournaments</h4>
-<div class="table-responsive">
-  <table class="table table-striped text-center align-middle">
-    <thead class="table-dark">
-      <tr>
-        <th>Name</th>
-        <th>Date</th>
-        <th>Location</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @tournaments.reject { |t| t.host_id == current_user.id }.each do |tournament| %>
-        <% if policy(tournament).show? %>
-          <tr>
-            <td><%= tournament.name %></td>
-            <td><%= tournament.start_date.strftime("%d %b %Y") %></td>
-            <td><%= tournament.location %></td>
-          </tr>
-        <% end %>
+  <!-- Create Tournament Button -->
+  <% if policy(Tournament).create? %>
+    <div class="d-flex justify-content-start mt-4">
+      <%= link_to new_host_tournament_path, class: "btn btn-primary rounded-3 shadow-sm px-4 py-2" do %>
+        <i class="fas fa-plus"></i> Create Tournament
       <% end %>
-    </tbody>
-  </table>
-</div>
+    </div>
+  <% end %>
 
+  <!-- Your Tournaments Section -->
+  <div class="mt-5">
+    <h4 class="fw-bold mb-3 text-primary">🏆 Your Tournaments</h4>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Location</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tournaments.select { |t| t.host_id == current_user.id }.each do |tournament| %>
+            <% if policy(tournament).show? %>
+              <tr class="align-middle">
+                <td class="fw-semibold"><%= tournament.name %></td>
+                <td><%= tournament.start_date.strftime("%d %b %Y") %></td>
+                <td><%= tournament.location %></td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <%= link_to "View", host_tournament_path(tournament), class: "btn btn-outline-info btn-sm px-3" %>
+                    <% if policy(tournament).edit? %>
+                      <%= link_to "Edit", edit_host_tournament_path(tournament), class: "btn btn-outline-warning btn-sm px-3" %>
+                    <% end %>
+                    <% if policy(tournament).destroy? %>
+                      <%= button_to "Delete", host_tournament_path(tournament), method: :delete, 
+                        data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger btn-sm px-3" %>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
+  <!-- Other Tournaments Section -->
+  <div class="mt-5">
+    <h4 class="fw-bold mb-3 text-secondary">📅 Other Tournaments</h4>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tournaments.reject { |t| t.host_id == current_user.id }.each do |tournament| %>
+            <% if policy(tournament).show? %>
+              <tr class="align-middle">
+                <td class="fw-semibold"><%= tournament.name %></td>
+                <td><%= tournament.start_date.strftime("%d %b %Y") %></td>
+                <td><%= tournament.location %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

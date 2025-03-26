@@ -45,6 +45,10 @@ class Host::TournamentsController < ApplicationController
     authorize @tournament
   end
 
+  def my_tournaments
+    @tournaments = Tournament.where(host_id: current_user.id)
+    authorize :tournament, :my_tournaments?
+  end
 
   def create
     service = Host::TournamentService.new(current_user, tournament_params)

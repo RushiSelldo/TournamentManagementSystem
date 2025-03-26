@@ -19,6 +19,10 @@ class TournamentPolicy < ApplicationPolicy
     user.present? && user.role == "host" && record.host == user # Only the host can delete
   end
 
+  def my_tournaments?
+    user.present? && user.role =="host"
+  end
+
   def count?
     true # Anyone can fetch tournament count
   end
