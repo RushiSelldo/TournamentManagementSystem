@@ -1,7 +1,70 @@
-<h1>🏆 Welcome to the Tournament Management Dashboard</h1>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">🏆 Welcome to the Tournament Management Dashboard</h1>
+    <p class="dashboard-subtitle">
+      Manage tournaments, participants, and matches with ease.
+    </p>
+  </div>
 
-<p>This is your dashboard where you can manage tournaments, participants, and matches.</p>
+  <div class="dashboard-actions">
+    <%= link_to "📅 View Upcoming Tournaments", host_tournaments_path, class: "btn btn-primary" %>
+  </div>
 
-<%= link_to "📅 View Upcoming Tournaments", host_tournaments_path, class: "btn btn-primary" %>
-<div id="root"></div>
+  <div id="root" class="dashboard-root"></div>
+</div>
 
+<style>
+  .dashboard-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9fafb;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .dashboard-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .dashboard-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .dashboard-subtitle {
+    font-size: 1.2rem;
+    color: #555;
+  }
+
+  .dashboard-actions {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #4f46e5;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.3);
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #4338ca;
+    box-shadow: 0 4px 12px rgba(67, 56, 202, 0.4);
+  }
+
+  .dashboard-root {
+    margin-top: 24px;
+  }
+</style>
